@@ -27,4 +27,6 @@ jobs:
         uses: SimonScholz/google-chat-action@main
         with:
           webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+          title: 'Branch: ${{ github.ref_name }}'
+          subtitle: 'Commit: ${{ github.event.head_commit.message }}'
           jobStatus: '${{ job.status }}'
