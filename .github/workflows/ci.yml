@@ -1,0 +1,20 @@
+name: GithubAction CI/CD
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+
+        - name: Compile the code
+          run: g++ -o cppunit_test cppunit_test.cc
+        
+        - name: Run test
+          run: ./cppunit_test
+          continue-on-error: false #False by default
+
