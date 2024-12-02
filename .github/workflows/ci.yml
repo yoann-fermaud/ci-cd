@@ -1,0 +1,32 @@
+name: GithubAction CI/CD
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+
+        - name: Compile the code
+          run: g++ -o cppunit_test cppunit_test.cc
+        
+        - name: Run test
+          run: ./cppunit_test
+          continue-on-error: false #False by default
+
+  google-chat-action:
+    name: Google Chat GitHub Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Google Chat
+        if: ${{ always() }} #Use always to ensure that the notification is also send on failure of former steps
+        uses: SimonScholz/google-chat-action@main
+        with:
+          webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+          title: 'Branch: ${{ github.ref_name }}'
+          subtitle: 'Commit: ${{ github.event.head_commit.message }}'
+          jobStatus: '${{ job.status }}'
